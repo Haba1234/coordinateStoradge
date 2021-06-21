@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package service;
+
+option go_package = "../grpc/api;grpc";
+
+service Statistics {
+  rpc StreamDots(stream ClientStream) returns (stream ServerStream) {}
+}
+
+// Координаты точки.
+message Point {
+  uint32 x = 1;
+  uint32 y = 2;
+}
+
+message ClientStream{
+  Point point = 1;    // Координаты точки.
+  bool request = 2;   // Запросить соседей для точки?
+}
+
+message Result{
+  Point point = 1;    // Точка для запроса соседей.
+  int32 id = 2;       // Номер соседней точки
+  Point neighbor = 3; // Соседняя точка
+}
+
+message ServerStream{
+  repeated Result points = 1; // Точка из запроса соседей.
+}
