@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"coordinateStoradge/internal/app"
-	pb "coordinateStoradge/internal/grpc/api" // "github.com/Haba1234/coordinateStoradge/internal/grpc/api"
+	pb "coordinateStoradge/internal/grpc/api"
 	"coordinateStoradge/internal/service"
 	"google.golang.org/grpc"
 )
