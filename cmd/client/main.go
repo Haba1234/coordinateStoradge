@@ -22,7 +22,7 @@ func main() {
 	defer conn.Close()
 
 	client := pb.NewStatisticsClient(conn)
-	stream, err := client.StreamDots(context.Background())
+	stream, _ := client.StreamDots(context.Background())
 	waitc := make(chan struct{})
 	go func() {
 		for {
