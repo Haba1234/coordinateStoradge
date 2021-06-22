@@ -29,7 +29,6 @@ func NewSearch(storage *storage.Storage) *Search {
 
 func (s *Search) SavePoint(point app.Point) {
 	z := xy2dMorton(point.X, point.Y)
-	//log.Println("save:", point.X, point.Y, z)
 	s.storage.AddPoint(z)
 }
 
@@ -40,13 +39,12 @@ func (s *Search) SearchNeighbors(ctx context.Context, point app.Point) []app.Poi
 	s.neighbors = [app.MaxPoint]distance{}
 	s.ind = 0
 	z := xy2dMorton(p.X, p.Y)
-	_, ok := s.storage.ReadPoint(z)
-	if !ok || s.storage.Len() <= 1 {
+	if _, ok := s.storage.ReadPoint(z); !ok || s.storage.Len() <= 1 {
 		log.Println("Точка не существует или больше точек нет", s.storage.Len(), ok)
 		return nil
 	}
-	var d uint32
-	d = 1 // Размер области поиска, начинаем с d = 1.
+	var d uint32 //nolint:gosimple
+	d = 1        // Размер области поиска, начинаем с d = 1.
 	for {
 		zStart, zFinish := extremePoints(d, p)
 		for i := zStart; i <= zFinish; i++ {
@@ -64,7 +62,6 @@ func (s *Search) SearchNeighbors(ctx context.Context, point app.Point) []app.Poi
 				x, y := d2xyMorton(i)
 				// Расстояние между точками.
 				l := math.Pow(float64(int32(x)-int32(p.X)), 2) + math.Pow(float64(int32(y)-int32(p.Y)), 2)
-				//log.Println("d=", d, "x=", x, "y=", y, "l=", l)
 				s.saveNeighbors(l, app.Point{X: x, Y: y})
 			}
 		}
@@ -92,7 +89,6 @@ func extremePoints(d uint32, point app.Point) (uint64, uint64) {
 		dY = 0
 	}
 	zStart := xy2dMorton(dX, dY)
-	//log.Println("Start Point:", dX, dY, zStart, point)
 
 	dX = point.X + d
 	if int32(point.X)+int32(d) > app.MaxLimit {
@@ -103,7 +99,7 @@ func extremePoints(d uint32, point app.Point) (uint64, uint64) {
 		dY = app.MaxLimit
 	}
 	zFinish := xy2dMorton(dX, dY)
-	//log.Println("Finish Point:", dX, dY, zFinish, point)
+
 	return zStart, zFinish
 }
 
