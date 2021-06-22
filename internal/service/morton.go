@@ -19,7 +19,7 @@ func xy2dMorton(x, y uint32) uint64 {
 }
 
 func morton1(x uint64) uint64 {
-	x = x & 0x5555555555555555
+	x &= 0x5555555555555555
 	x = (x | (x >> 1)) & 0x3333333333333333
 	x = (x | (x >> 2)) & 0x0F0F0F0F0F0F0F0F
 	x = (x | (x >> 4)) & 0x00FF00FF00FF00FF
@@ -33,4 +33,3 @@ func d2xyMorton(d uint64) (uint32, uint32) {
 	y := morton1(d >> 1)
 	return uint32(x), uint32(y)
 }
-
