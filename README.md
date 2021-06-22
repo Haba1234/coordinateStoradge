@@ -1,4 +1,3 @@
-# Системный мониторинг
 Демон - gRPC сервис, поднимает Bidirectional streaming RPC.
 
 ## Описание
