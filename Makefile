@@ -7,7 +7,7 @@ run: build
 	$(BIN) -port 8080
 
 test:
-	go test -v -count=10 -race -timeout=5m ./...
+	go test -v -count=100 -race -timeout=5m ./...
 
 install-lint-deps:
 	(which golangci-lint > /dev/null) || curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(shell go env GOPATH)/bin v1.39.0
