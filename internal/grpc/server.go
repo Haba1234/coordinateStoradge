@@ -20,9 +20,9 @@ import (
 
 // Server структура сервера.
 type Server struct {
-	mu *sync.Mutex
+	mu  *sync.Mutex
+	srv *grpc.Server
 	pb.UnimplementedStatisticsServer
-	srv    *grpc.Server
 	search *service.Search
 }
 

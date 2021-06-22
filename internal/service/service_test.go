@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"log"
 	"testing"
 
 	"coordinateStoradge/internal/app"
@@ -31,7 +30,6 @@ func TestService(t *testing.T) {
 
 		result := search.SearchNeighbors(context.Background(), p)
 		require.Equal(t, []app.Point{{X: 7, Y: 4}, {X: 4, Y: 4}, {X: 5, Y: 5}}, result)
-		log.Println(result)
 	})
 
 	t.Run("one point", func(t *testing.T) {

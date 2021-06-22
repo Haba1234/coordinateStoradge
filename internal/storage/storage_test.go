@@ -11,10 +11,10 @@ func TestStorage(t *testing.T) {
 	t.Run("add point", func(t *testing.T) {
 		t.Parallel()
 		s := NewStorage()
-		z := 312345
-		s.AddPoint(uint64(z))
+		z := uint64(312345)
+		s.AddPoint(z)
 		s.RLock()
-		val, ok := s.ReadPoint(uint64(z))
+		val, ok := s.ReadPoint(z)
 		s.RUnlock()
 		require.Equal(t, true, val)
 		require.Equal(t, true, ok)
@@ -24,9 +24,9 @@ func TestStorage(t *testing.T) {
 	t.Run("read point", func(t *testing.T) {
 		t.Parallel()
 		s := NewStorage()
-		z := 312345
+		z := uint64(312345)
 		s.RLock()
-		val, ok := s.ReadPoint(uint64(z))
+		val, ok := s.ReadPoint(z)
 		s.RUnlock()
 		require.Equal(t, false, val)
 		require.Equal(t, false, ok)
