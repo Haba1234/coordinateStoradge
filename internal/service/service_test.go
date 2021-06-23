@@ -4,14 +4,14 @@ import (
 	"context"
 	"testing"
 
-	"coordinateStoradge/internal/app"
-	"coordinateStoradge/internal/storage"
+	"github.com/Haba1234/coordinateStoradge/internal/app"
+	"github.com/Haba1234/coordinateStoradge/internal/storage"
 	"github.com/stretchr/testify/require"
 )
 
 func TestService(t *testing.T) {
 	t.Parallel()
-	t.Run("Search points", func(t *testing.T) {
+	t.Run("search points", func(t *testing.T) {
 		t.Parallel()
 		s := storage.NewStorage()
 		search := NewSearch(s)

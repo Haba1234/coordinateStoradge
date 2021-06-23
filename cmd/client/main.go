@@ -8,7 +8,7 @@ import (
 	"math/rand"
 	"time"
 
-	pb "coordinateStoradge/internal/grpc/api"
+	pb "github.com/Haba1234/coordinateStoradge/internal/grpc/api"
 	"google.golang.org/grpc"
 )
 

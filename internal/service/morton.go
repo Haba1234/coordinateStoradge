@@ -1,7 +1,7 @@
 package service
 
 import (
-	"coordinateStoradge/internal/app"
+	"github.com/Haba1234/coordinateStoradge/internal/app"
 )
 
 func xy2dMorton(point app.Point) uint64 {

@@ -3,7 +3,7 @@ package service
 import (
 	"testing"
 
-	"coordinateStoradge/internal/app"
+	"github.com/Haba1234/coordinateStoradge/internal/app"
 	"github.com/stretchr/testify/require"
 )
 

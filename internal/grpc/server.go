@@ -10,31 +10,30 @@ import (
 	"sync"
 	"time"
 
-	"coordinateStoradge/internal/app"
-	pb "coordinateStoradge/internal/grpc/api"
-	"coordinateStoradge/internal/service"
+	"github.com/Haba1234/coordinateStoradge/internal/app"
+	pb "github.com/Haba1234/coordinateStoradge/internal/grpc/api"
 	"google.golang.org/grpc"
 )
 
 //go:generate protoc -I ./api service.proto --go_out=. --go-grpc_out=.
 
-// Server структура сервера.
-type Server struct {
+// server структура сервера.
+type server struct {
 	mu  *sync.Mutex
 	srv *grpc.Server
 	pb.UnimplementedStatisticsServer
-	search *service.Search
+	search app.Search
 }
 
-func NewServer(search *service.Search) *Server {
-	return &Server{
+func NewServer(search app.Search) app.Server {
+	return &server{
 		mu:     &sync.Mutex{},
 		search: search,
 	}
 }
 
 // Start запуск сервера gRPC.
-func (s *Server) Start(addr string) error {
+func (s *server) Start(addr string) error {
 	log.Println("gRPC server " + addr + " running...")
 	lsn, err := net.Listen("tcp", addr)
 	if err != nil {
@@ -61,7 +60,7 @@ func loggingServerInterceptor() grpc.StreamServerInterceptor {
 }
 
 // Stop останов сервера gRPC.
-func (s *Server) Stop() error {
+func (s *server) Stop() error {
 	log.Println("gRPC server stopped")
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -69,7 +68,7 @@ func (s *Server) Stop() error {
 	return nil
 }
 
-func (s *Server) StreamDots(stream pb.Statistics_StreamDotsServer) error {
+func (s *server) StreamDots(stream pb.Statistics_StreamDotsServer) error {
 	for {
 		in, err := stream.Recv()
 		if errors.Is(err, io.EOF) {
@@ -98,7 +97,7 @@ func (s *Server) StreamDots(stream pb.Statistics_StreamDotsServer) error {
 }
 
 // Подготовка данных к отправке.
-func (s *Server) writeResponse(ctx context.Context, point app.Point) *pb.ServerStream {
+func (s *server) writeResponse(ctx context.Context, point app.Point) *pb.ServerStream {
 	points := s.search.SearchNeighbors(ctx, point)
 	pbPoints := make([]*pb.Result, app.MaxPoint)
 

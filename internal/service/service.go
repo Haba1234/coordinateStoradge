@@ -4,8 +4,7 @@ import (
 	"context"
 	"math"
 
-	"coordinateStoradge/internal/app"
-	"coordinateStoradge/internal/storage"
+	"github.com/Haba1234/coordinateStoradge/internal/app"
 )
 
 type distance struct {
@@ -13,27 +12,27 @@ type distance struct {
 	l     float64   // Расстояние между точками.
 }
 
-// Search структура БЛ.
-type Search struct {
-	storage   *storage.Storage
+// search структура БЛ.
+type search struct {
+	storage   app.Storage
 	neighbors [app.MaxPoint]distance
 	ind       int // Найдено соседей.
 }
 
-func NewSearch(storage *storage.Storage) *Search {
-	return &Search{
+func NewSearch(storage app.Storage) app.Search {
+	return &search{
 		storage: storage,
 	}
 }
 
 // SavePoint преобразование координат в Z и запись в архив.
-func (s *Search) SavePoint(point app.Point) {
+func (s *search) SavePoint(point app.Point) {
 	z := xy2dMorton(point)
 	s.storage.AddPoint(z)
 }
 
 // SearchNeighbors функция поиска ближайших соседей заданной точки.
-func (s *Search) SearchNeighbors(ctx context.Context, point app.Point) []app.Point {
+func (s *search) SearchNeighbors(ctx context.Context, point app.Point) []app.Point {
 	s.storage.RLock()
 	defer s.storage.RUnlock()
 
@@ -105,7 +104,7 @@ func extremePoints(d uint32, point app.Point) (uint64, uint64) {
 }
 
 // saveNeighbors сохраняет в слайс соседей и при необходимости сортирует по дальности.
-func (s *Search) saveNeighbors(l float64, point app.Point) {
+func (s *search) saveNeighbors(l float64, point app.Point) {
 	for i, v := range s.neighbors {
 		if v.point == point {
 			break // Такая точка уже найдена.

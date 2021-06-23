@@ -8,9 +8,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"coordinateStoradge/internal/grpc"
-	"coordinateStoradge/internal/service"
-	"coordinateStoradge/internal/storage"
+	"github.com/Haba1234/coordinateStoradge/internal/grpc"
+	"github.com/Haba1234/coordinateStoradge/internal/service"
+	"github.com/Haba1234/coordinateStoradge/internal/storage"
 )
 
 func main() {
