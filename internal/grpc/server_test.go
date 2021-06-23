@@ -108,9 +108,44 @@ func (s *Suite) TestStartStop() {
 func (s *Suite) TestStreamDotsOK() {
 	s.stream.On("Recv").Return(s.streamFn, s.errorFn)
 	s.stream.On("Context").Return(context.Background())
-	s.stream.On("Send", mock.Anything).Return(nil)
+	result := &pb.ServerStream{Points: []*pb.Result{
+		{
+			Point: &pb.Point{
+				X: 3000,
+				Y: 3000,
+			},
+			Id: 1,
+			Neighbor: &pb.Point{
+				X: 1000,
+				Y: 1000,
+			},
+		},
+		{
+			Point: &pb.Point{
+				X: 3000,
+				Y: 3000,
+			},
+			Id: 2,
+			Neighbor: &pb.Point{
+				X: 2000,
+				Y: 2000,
+			},
+		},
+		{
+			Point: &pb.Point{
+				X: 3000,
+				Y: 3000,
+			},
+			Id: 3,
+			Neighbor: &pb.Point{
+				X: 3000,
+				Y: 3000,
+			},
+		},
+	}}
+	s.stream.On("Send", result).Return(nil).Once()
 	s.service.On("SavePoint", mock.Anything).Return()
-	s.service.On("SearchNeighbors", context.Background(), mock.Anything).Return(s.points)
+	s.service.On("SearchNeighbors", context.Background(), mock.Anything).Return(s.points).Once()
 
 	server := NewServer(s.service)
 	err := server.StreamDots(s.stream)
